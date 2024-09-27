@@ -146,7 +146,7 @@ async function bookProperty(
   }: { arg: { dateRange: [Date | null, Date | null]; customerName: string } }
 ) {
   const { dateRange, customerName } = arg;
-  return await fetch(`http://localhost:3000${url}`, {
+  return await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -160,7 +160,7 @@ async function bookProperty(
 }
 
 async function deleteProperty(url: string) {
-  return await fetch(`http://localhost:3000${url}`, {
+  return await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`, {
     method: "DELETE",
   }).then((res) => res.json());
 }

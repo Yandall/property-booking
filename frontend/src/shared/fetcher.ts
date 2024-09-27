@@ -1,6 +1,8 @@
 export function fetcher(url: string, options?: any) {
   if (url !== "") {
-    const newUrl = url.startsWith("http") ? url : `http://localhost:3000${url}`;
+    const newUrl = url.startsWith("http")
+      ? url
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`;
     return fetch(newUrl, options)
       .then(async (res) => {
         return res.json();

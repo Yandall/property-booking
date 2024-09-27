@@ -86,7 +86,7 @@ async function createProperty(
   url: string,
   { arg }: { arg: CreatePropertyDto }
 ) {
-  return await fetch(`http://localhost:3000${url}`, {
+  return await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

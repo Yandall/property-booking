@@ -15,7 +15,7 @@ import useSWRMutation from "swr/mutation";
 import { useRouter } from "next/router";
 
 async function bootstrap(url: string) {
-  await fetch(`http://localhost:3000${url}`, {
+  await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`, {
     method: "POST",
   });
 }
