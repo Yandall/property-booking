@@ -17,9 +17,11 @@ export class CreatePropertyDto {
 
 export class UpdatePropertyDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
+  @IsNotEmpty()
   location: string;
 
   @IsNumber()
