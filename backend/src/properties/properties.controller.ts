@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 import { BookingsService } from 'src/bookings/bookings.service';
-import { CreatePropertyDto } from './properties.dto';
+import { CreatePropertyDto, UpdatePropertyDto } from './properties.dto';
 import { CreateBookingDto } from 'src/bookings/bookings.dto';
 
 @Controller('properties')
@@ -32,7 +32,10 @@ export class PropertiesController {
   }
 
   @Put(':id')
-  async updateProperty(@Param('id') id: number, @Body() property: any) {
+  async updateProperty(
+    @Param('id') id: number,
+    @Body() property: UpdatePropertyDto,
+  ) {
     return this.propertiesService.updateProperty(id, property);
   }
 

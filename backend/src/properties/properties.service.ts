@@ -2,9 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Property } from './property.entity';
 import { Repository } from 'typeorm';
-import { CreatePropertyDto } from './properties.dto';
+import { CreatePropertyDto, UpdatePropertyDto } from './properties.dto';
 import { isNumber } from 'class-validator';
 import { Booking } from 'src/bookings/booking.entity';
+import { getError } from 'src/shared/errorMessages';
 
 @Injectable()
 export class PropertiesService {
@@ -19,28 +20,16 @@ export class PropertiesService {
     return this.propertyRepository.find();
   }
 
-  async updateProperty(id: number, property: Property) {
+  async updateProperty(id: number, property: UpdatePropertyDto) {
     if (!isNumber(id)) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Property id is not a number',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw getError('Property id is not a number', HttpStatus.BAD_REQUEST);
     }
     return this.propertyRepository.update(id, property);
   }
 
   async deleteProperty(id: number) {
     if (!isNumber(id)) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Property id is not a number',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw getError('Property id is not a number', HttpStatus.BAD_REQUEST);
     }
     this.bookingRepository.delete({
       property: { id },
@@ -55,13 +44,7 @@ export class PropertiesService {
 
   async getPropertyById(id: number) {
     if (!isNumber(id)) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Property id is not a number',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw getError('Property id is not a number', HttpStatus.BAD_REQUEST);
     }
     return this.propertyRepository.findOne({
       where: { id },

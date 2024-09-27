@@ -5,6 +5,7 @@ import { Booking } from './booking.entity';
 import { CreateBookingDto } from './bookings.dto';
 import { PropertiesService } from 'src/properties/properties.service';
 import { isNumber } from 'class-validator';
+import { getError } from 'src/shared/errorMessages';
 
 @Injectable()
 export class BookingsService {
@@ -18,13 +19,7 @@ export class BookingsService {
     let availability = checkIn.getTime() < checkOut.getTime();
     const property = await this.propertiesService.getPropertyById(propertyId);
     if (!property) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Property not found',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw getError('Property not found', HttpStatus.BAD_REQUEST);
     }
 
     // With only two variables is not enough to check for all the possible available dates
@@ -35,22 +30,13 @@ export class BookingsService {
 
   async createBooking(propertyId: number, booking: CreateBookingDto) {
     if (!isNumber(propertyId)) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Property id is not a number',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw getError('Property id is not a number', HttpStatus.BAD_REQUEST);
     }
     if (
       !(await this.isAvailable(propertyId, booking.checkIn, booking.checkOut))
     ) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Booking is not available between dates selected',
-        },
+      throw getError(
+        'Booking is not available between dates selected',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -71,13 +57,7 @@ export class BookingsService {
   }
   async findAllBookingsByPropertyId(propertyId: number) {
     if (!isNumber(propertyId)) {
-      throw new HttpException(
-        {
-          stauts: HttpStatus.BAD_REQUEST,
-          error: 'Property id is not a number',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw getError('Property id is not a number', HttpStatus.BAD_REQUEST);
     }
     return this.bookingRepository.find({
       where: { property: { id: propertyId } },
